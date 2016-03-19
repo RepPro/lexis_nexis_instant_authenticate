@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.name          = "lexis_nexis_instant_authenticate"
   spec.version       = LexisNexisInstantAuthenticate::VERSION
   spec.authors       = ["Christopher Ostrowski"]
-  spec.email         = ["chris@madebyfunction.com"]
+  spec.email         = ["chris@reppro.co"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
+  spec.summary       = %q{Ruby interface for using LexisNexis Instant Authenticate.}
   spec.description   = %q{TODO: Write a longer description or delete this line.}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
 
@@ -29,4 +29,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "pry"
+  spec.add_dependency 'savon', '~> 2.0'
 end
