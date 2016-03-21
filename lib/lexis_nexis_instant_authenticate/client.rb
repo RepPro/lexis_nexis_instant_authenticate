@@ -1,6 +1,8 @@
 require 'savon'
 require_relative './akami_patch'
+require_relative './requests/base'
 require_relative './requests/create_quiz'
+require_relative './requests/score_quiz'
 require_relative './resources/quiz'
 
 module LexisNexisInstantAuthenticate
@@ -9,8 +11,8 @@ module LexisNexisInstantAuthenticate
       @options = options
     end
 
-    def client
-      @client ||= Savon.client(wsdl: wsdl_location) do |config|
+    def savon
+      @savon ||= Savon.client(wsdl: wsdl_location) do |config|
         config.endpoint endpoint_location
         config.env_namespace :soapenv
         config.raise_errors @options[:production]
@@ -22,23 +24,23 @@ module LexisNexisInstantAuthenticate
     end
 
     def create_quiz(person = {})
-      response = call_service(Services::CreateQuiz.new(person, header).to_s)
+      response = call_service(Services::CreateQuiz.new(self, person).to_s)
       Resources::Quiz.new(response.hash)
+    end
+
+    def flow
+      @options[:flow]
     end
 
     private
     def build_request
-      client.build_request(:invoke_identity_service)
+      savon.build_request(:invoke_identity_service)
     end
 
     def call_service(request_body, locals = {})
       request = build_request
       request.body = request_body
-      Savon::Response.new(HTTPI.post(request), client.globals, locals)
-    end
-
-    def header
-      Savon::Header.new(client.globals, {})
+      Savon::Response.new(HTTPI.post(request), savon.globals, locals)
     end
 
     def wsdl_location

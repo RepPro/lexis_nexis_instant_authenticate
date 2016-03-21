@@ -11,7 +11,7 @@ module LexisNexisInstantAuthenticate
 
       def success?
         case status
-        when "IDENTITY_NOT_LOCATED" then false
+        when "IDENTITY_NOT_LOCATED", "UNABLE_TO_GENERATE" then false
         else true
         end
       end
