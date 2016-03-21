@@ -3,7 +3,9 @@ require_relative './akami_patch'
 require_relative './requests/base'
 require_relative './requests/create_quiz'
 require_relative './requests/score_quiz'
+require_relative './resources/base'
 require_relative './resources/quiz'
+require_relative './resources/score'
 
 module LexisNexisInstantAuthenticate
   class Client
@@ -23,9 +25,23 @@ module LexisNexisInstantAuthenticate
       end
     end
 
+    def transaction_id
+      if @options[:transaction_id]
+        @options[:transaction_id]
+      else
+        @options[:transaction_id] = SecureRandom.uuid
+        @options[:transaction_id]
+      end
+    end
+
     def create_quiz(person = {})
       response = call_service(Services::CreateQuiz.new(self, person).to_s)
-      Resources::Quiz.new(response.hash)
+      Resources::Quiz.new(self, response)
+    end
+
+    def score_quiz(id, responses)
+      response = call_service(Services::ScoreQuiz.new(self, id, responses).to_s)
+      Resources::Score.new(response)
     end
 
     def flow

@@ -13,12 +13,13 @@ module LexisNexisInstantAuthenticate
              xmlns:ns="http://ns.lexisnexis.com/identity-proofing/1.0" 
              xmlns:ns1="http://ns.lexisnexis.com/survey/1.0">
               <soapenv:Header>
-                #{@header}  
+                #{header}  
               </soapenv:Header>
              <soapenv:Body>
                 <ws:invokeIdentityService>
-                   <ns:identityProofingRequest ns:transactionID="#{transaction_id}">
-                      #{xml_body}
+                   <ns:identityProofingRequest ns:transactionID="#{@client.transaction_id}">
+                      <ns:workFlow>#{@client.flow}</ns:workFlow>
+                      #{request_body}
                    </ns:identityProofingRequest>
                 </ws:invokeIdentityService>
              </soapenv:Body>
@@ -26,11 +27,7 @@ module LexisNexisInstantAuthenticate
         }
       end
 
-      def xml_body
-      end
-
-      def transaction_id
-        @transaction_id ||= SecureRandom.uuid
+      def request_body
       end
 
 

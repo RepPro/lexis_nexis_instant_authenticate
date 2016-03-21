@@ -6,9 +6,8 @@ module LexisNexisInstantAuthenticate
         @client = client
       end
 
-      def xml_body
+      def request_body
         %{
-          <ns:workFlow>#{@client.flow}</ns:workFlow>
           <ns:inputSubject>
              <ns:person>
                 <ns:name>
@@ -25,7 +24,7 @@ module LexisNexisInstantAuthenticate
                 </ns:dateOfBirth>
                 <ns:age>#{@person[:age]}</ns:age>
                 <ns:gender>#{@person[:gender]}</ns:gender>
-                <ns:ssn>#{@person[:gender]}</ns:ssn>
+                <ns:ssn>#{@person[:ssn]}</ns:ssn>
             </ns:person>
           </ns:inputSubject>
         }
