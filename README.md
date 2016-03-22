@@ -1,8 +1,7 @@
 # LexisNexisInstantAuthenticate
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/lexis_nexis_instant_authenticate`. To experiment with that code, run `bin/console` for an interactive prompt.
+Generate & Score Instant Authenicate quizes using Lexis Nexis SOAP API.
 
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
@@ -22,7 +21,34 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+###Create a client.
+```ruby
+@client = LexisNexisInstantAuthenticate::Client.new(username: ENV['LEXIS_UN'], password: ENV['LEXIS_PW'], flow: "LEXIS_FLOW", transaction_id: SecureRandom.uuid)
+```
+
+Options:
+ * `username:` Lexis Nexis supplied username. Typically, "#{account_id}/#{username}"
+ * `password:` Lexis Nexis supplied password.
+ * `flow:` Name of workflow.
+ * `transaction_id:` Optional GUID. This must be the same string between quiz creation & quiz scoring requests. If you do not pass one in on quiz creation, `SecureRandom.uuid` will be used and returned with the generated quiz. That same string must be sent when scoring quiz.
+
+###Generate a quiz.
+```ruby
+  response = @client.create_quiz({first_name: "Joe", middle_name: "L", last_name: "Smith", ssn: "123456789", dob: {day: "01", month: "01", year: "1950"}})
+  if response.success?
+    return response
+  else
+    return response.status
+  end
+```
+
+Response will have:
+* `response.questions`
+* `response.id`
+* `response.transaction_id`
+
+
+
 
 ## Development
 
