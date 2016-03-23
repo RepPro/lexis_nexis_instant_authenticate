@@ -1,6 +1,10 @@
 module LexisNexisInstantAuthenticate
   module Resources
     class Score < Base
+      def pass?
+        status != "FAIL"
+      end
+
       def score
         product_response[:quiz_score]
       end

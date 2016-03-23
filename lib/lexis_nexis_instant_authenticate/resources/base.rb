@@ -1,6 +1,7 @@
 module LexisNexisInstantAuthenticate
   module Resources
     class Base
+      attr_reader :response
       def initialize(client, response)
         @client = client
         @response = response
