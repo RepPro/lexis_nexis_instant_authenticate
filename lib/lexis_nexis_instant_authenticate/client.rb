@@ -41,6 +41,7 @@ module LexisNexisInstantAuthenticate
 
     def score_quiz(id, responses)
       response = call_service(Services::ScoreQuiz.new(self, id, responses).to_s)
+      puts response.hash
       Resources::Score.new(self, response)
     end
 
@@ -55,8 +56,11 @@ module LexisNexisInstantAuthenticate
 
     def call_service(request_body, locals = {})
       request = build_request
+      puts request_body
       request.body = request_body
-      Savon::Response.new(HTTPI.post(request), savon.globals, locals)
+      response = Savon::Response.new(HTTPI.post(request), savon.globals, locals)
+      puts response.http.body
+      response
     end
 
     def wsdl_location
