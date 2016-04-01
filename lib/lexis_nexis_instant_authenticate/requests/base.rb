@@ -1,6 +1,10 @@
+require 'gyoku'
+
 module LexisNexisInstantAuthenticate
   module Services
     class Base
+      NAMESPACE = "ns".freeze
+
       def header
         Savon::Header.new(@client.savon.globals, {})
       end
@@ -19,7 +23,7 @@ module LexisNexisInstantAuthenticate
                 <ws:invokeIdentityService>
                    <ns:identityProofingRequest ns:transactionID="#{@client.transaction_id}">
                       <ns:workFlow>#{@client.flow}</ns:workFlow>
-                      #{request_body}
+                      #{to_xml}
                    </ns:identityProofingRequest>
                 </ws:invokeIdentityService>
              </soapenv:Body>
@@ -27,7 +31,20 @@ module LexisNexisInstantAuthenticate
         }
       end
 
+      def to_xml
+        Gyoku.xml(request_body, key_converter: -> key { [NAMESPACE, key.camelize(:lower)].join(':') })
+      end
+
       def request_body
+        {}
+      end
+
+      def nil_to_string(object)
+        case object
+        when Hash then object.each {|k,v| object[k] = "" if v.nil?}
+        else object = "" if object.nil?
+        end
+        return object
       end
 
 

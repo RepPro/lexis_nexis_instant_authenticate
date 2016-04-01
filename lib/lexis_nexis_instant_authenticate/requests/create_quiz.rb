@@ -2,31 +2,55 @@ module LexisNexisInstantAuthenticate
   module Services
     class CreateQuiz < Base
       def initialize(client, person)
-        @person = {dob: {}}.merge(person)
+        @person = {dob: {}, address: {}}.merge(person)
         @client = client
       end
 
       def request_body
-        %{
-          <ns:inputSubject>
-             <ns:person>
-                <ns:name>
-                   <ns:prefix></ns:prefix>
-                   <ns:first>#{@person[:first_name]}</ns:first>
-                   <ns:middle>#{@person[:middle_name]}</ns:middle>
-                   <ns:last>#{@person[:last_name]}</ns:last>
-                   <ns:suffix></ns:suffix>
-                </ns:name>
-                <ns:dateOfBirth>
-                   <ns:Year>#{@person[:dob][:year]}</ns:Year>
-                   <ns:Month>#{@person[:dob][:month]}</ns:Month>
-                   <ns:Day>#{@person[:dob][:day]}</ns:Day>
-                </ns:dateOfBirth>
-                <ns:age>#{@person[:age]}</ns:age>
-                <ns:gender>#{@person[:gender]}</ns:gender>
-                <ns:ssn>#{@person[:ssn]}</ns:ssn>
-            </ns:person>
-          </ns:inputSubject>
+        {
+          input_subject: {
+            person: {
+              name: nil_to_string(name),
+              date_of_birth: nil_to_string(date_of_birth),
+              age: nil_to_string(age),
+              gender: nil_to_string(gender),
+              ssn: nil_to_string(ssn),
+              address: nil_to_string(address)
+            }
+          }
+        }
+      end
+
+      private
+      def name
+        {prefix: "", first: @person[:first_name], middle: @person[:middle_name], last: @person[:last_name], suffix: ""}
+      end
+
+      def date_of_birth
+        {year: @person[:dob][:year], month: @person[:dob][:month], day: @person[:dob][:day]}
+      end
+
+      def age
+        @person[:age]
+      end
+
+      def gender
+        return "" unless @person[:gender].present?
+        return @person[:gender].capitalize[0] if @person[:gender].length > 1
+        return @person[:gender]
+      end
+
+      def ssn
+        @person[:ssn].present? && @person[:ssn].gsub(/\D/, "")
+      end
+
+      def address
+        {
+          street_address_1: @person[:address][:line_1],
+          street_address_2: @person[:address][:line_2],
+          city: @person[:address][:city],
+          state: @person[:address][:state],
+          postal_code: @person[:address][:zip_code]
         }
       end
 

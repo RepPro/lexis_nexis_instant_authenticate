@@ -56,10 +56,8 @@ module LexisNexisInstantAuthenticate
 
     def call_service(request_body, locals = {})
       request = build_request
-      puts request_body
       request.body = request_body
       response = Savon::Response.new(HTTPI.post(request), savon.globals, locals)
-      puts response.http.body
       response
     end
 

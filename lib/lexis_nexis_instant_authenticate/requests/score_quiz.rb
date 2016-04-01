@@ -8,23 +8,21 @@ module LexisNexisInstantAuthenticate
         @client = client
       end
 
-      def responses_to_xml
-        @quiz_responses.map do |resp|
-          %{
-            <ns:answer>
-              <ns:questionId>#{resp[:question_id]}</ns:questionId>
-              <ns:choiceId>#{resp[:choice_id]}</ns:choiceId> 
-            </ns:answer>
+      def responses_to_hash
+        @quiz_responses.map do |resp| 
+          { 
+            "#{NAMESPACE}:questionId" => resp[:question_id],
+            "#{NAMESPACE}:choiceId" => resp[:choice_id]
           }
-        end.join("\n")
+        end
       end
 
       def request_body
-        %{
-          <ns:scoreRequest>
-            <ns:quizId>#{@quiz_id}</ns:quizId>
-            #{responses_to_xml}
-          </ns:scoreRequest>
+        {
+          score_request: {
+            quiz_id: @quiz_id,
+            answer: responses_to_hash
+          }
         }
       end
 
