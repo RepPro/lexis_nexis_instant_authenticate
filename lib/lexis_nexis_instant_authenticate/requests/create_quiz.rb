@@ -50,7 +50,7 @@ module LexisNexisInstantAuthenticate
           street_address_2: @person[:address][:line_2],
           city: @person[:address][:city],
           state: @person[:address][:state],
-          postal_code: @person[:address][:zip_code]
+          zip5: @person[:address][:zip_code]
         }
       end
 
