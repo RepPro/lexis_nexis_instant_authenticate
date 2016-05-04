@@ -41,7 +41,6 @@ module LexisNexisInstantAuthenticate
 
     def score_quiz(id, responses)
       response = call_service(Services::ScoreQuiz.new(self, id, responses).to_s)
-      puts response.hash
       Resources::Score.new(self, response)
     end
 
