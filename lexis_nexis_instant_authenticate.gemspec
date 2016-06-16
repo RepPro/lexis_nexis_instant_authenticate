@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_dependency 'savon', '~> 2.0'
   spec.add_dependency 'gyoku'
+  spec.add_dependency 'activesupport'
 end
