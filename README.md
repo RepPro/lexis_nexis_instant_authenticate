@@ -49,8 +49,8 @@ Response will have:
 
 ###Scoring Responses
 The `score_quiz` method expects the following arguments:
-* `transaction_id` This is the GUID that you passed the `create_quiz` method or the GUID that was generated for you.
-* `responses` This is an array of hashes in the form of `{question_id => choice_id}`
+* `transaction_id` This is the GUID that you called the `create_quiz` method with or the GUID that was generated for you.
+* `responses` This is an array of hashes in the form of `{question_id: 1234, choice_id: 4321}`
 
 ```ruby
   response = @client.score_quiz(transaction_id, Array(@responses).map(&:with_indifferent_access))
