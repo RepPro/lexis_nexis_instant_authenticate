@@ -19,6 +19,7 @@ module LexisNexisInstantAuthenticate
         config.env_namespace :soapenv
         config.raise_errors @options[:production]
         config.log !@options[:production]
+        config.log_level @options[:log_level] || :warn
         config.namespace_identifier "ws"
 
         config.wsse_auth(@options[:username], @options[:password], :digest)
@@ -53,10 +54,23 @@ module LexisNexisInstantAuthenticate
       savon.build_request(:invoke_identity_service)
     end
 
+    def debug?
+      savon.globals[:logger].debug?
+    end
+
     def call_service(request_body, locals = {})
       request = build_request
       request.body = request_body
+      if debug?
+        puts request.body
+      end
       response = Savon::Response.new(HTTPI.post(request), savon.globals, locals)
+      if response.http_error
+        fail "Bad HTTP response: #{response.http_error}"
+      end
+      if debug?
+        puts response.hash.pretty_inspect
+      end
       response
     end
 
