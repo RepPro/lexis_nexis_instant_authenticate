@@ -15,7 +15,8 @@ module LexisNexisInstantAuthenticate
               age: nil_to_string(age),
               gender: nil_to_string(gender),
               ssn: nil_to_string(ssn),
-              address: nil_to_string(address)
+              address: nil_to_string(address),
+              email: nil_to_string(email)
             }
           }
         }
@@ -54,6 +55,9 @@ module LexisNexisInstantAuthenticate
         }
       end
 
+      def email
+        @person[:email]
+      end
 
     end
   end
