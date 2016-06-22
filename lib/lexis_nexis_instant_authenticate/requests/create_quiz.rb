@@ -16,7 +16,8 @@ module LexisNexisInstantAuthenticate
               gender: nil_to_string(gender),
               ssn: nil_to_string(ssn),
               address: nil_to_string(address),
-              email: nil_to_string(email)
+              email: nil_to_string(email),
+              license: nil_to_string(drivers_license)
             }
           }
         }
@@ -59,6 +60,14 @@ module LexisNexisInstantAuthenticate
         @person[:email]
       end
 
+      def drivers_license
+        return "" unless @person[:drivers_license].present?
+        {
+          :@type => 'DRIVERS_LICENSE',
+          license_number: @person[:drivers_license][:number],
+          issuer: @person[:drivers_license][:state]
+        }
+      end
     end
   end
 end
