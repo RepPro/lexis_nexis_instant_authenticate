@@ -1,4 +1,7 @@
 require 'gyoku'
+require 'active_support'
+require 'active_support/core_ext/object'
+require 'active_support/inflector'
 
 module LexisNexisInstantAuthenticate
   module Services
