@@ -62,14 +62,14 @@ module LexisNexisInstantAuthenticate
       request = build_request
       request.body = request_body
       if debug?
-        puts request.body
+        savon.globals[:logger].debug request.body
       end
       response = Savon::Response.new(HTTPI.post(request), savon.globals, locals)
       if response.http_error
         fail "Bad HTTP response: #{response.http_error}"
       end
       if debug?
-        puts response.hash.pretty_inspect
+        savon.globals[:logger].debug response.hash.pretty_inspect
       end
       response
     end
