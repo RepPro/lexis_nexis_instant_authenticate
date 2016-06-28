@@ -12,7 +12,7 @@ module LexisNexisInstantAuthenticate
       end
 
       def proofing_response
-        @response.hash[:envelope][:body][:invoke_identity_service_response][:identity_proofing_response]
+        h_dig(@response.hash, :envelope, :body, :invoke_identity_service_response, :identity_proofing_response)
       end
 
       def success?
@@ -23,11 +23,17 @@ module LexisNexisInstantAuthenticate
       end
 
       def status
-        proofing_response[:status]
+        h_dig(proofing_response, :status)
       end
 
       def product_response
-        proofing_response[:product_response]
+        h_dig(proofing_response, :product_response)
+      end
+
+      def h_dig(hash, *path)
+        path.inject(hash) do |location, key|
+          location.respond_to?(:keys) ? location[key] : nil
+        end
       end
 
     end

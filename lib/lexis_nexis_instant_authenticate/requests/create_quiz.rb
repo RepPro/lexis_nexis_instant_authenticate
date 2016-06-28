@@ -25,7 +25,7 @@ module LexisNexisInstantAuthenticate
 
       private
       def name
-        {prefix: "", first: @person[:first_name], middle: @person[:middle_name], last: @person[:last_name], suffix: ""}
+        {prefix: @person[:prefix], first: @person[:first_name], middle: @person[:middle_name], last: @person[:last_name], suffix: @person[:suffix]}
       end
 
       def date_of_birth
