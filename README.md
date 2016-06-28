@@ -2,6 +2,13 @@
 
 Generate & Score Instant Authenicate quizes using Lexis Nexis SOAP API.
 
+## Notes
+
+This gem originally started as a simple Savon.rb service, however, it was quickly made clear that the LN SOAP API has some rough edges that require some specialized changes.
+The main patch was around authentication. This gem monkey patches the `Akami::WSSE#wsse_username_token` method to include the cleartext password along with the digest auth.
+
+This gem also does not leverage the WSDL from LN, even though it does import it into Savon. Savon has problems parsing the WSDL correctly and as such does not provide a reliable interface.
+
 
 ## Installation
 
