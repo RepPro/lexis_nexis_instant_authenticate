@@ -1,7 +1,4 @@
 require 'gyoku'
-require 'active_support'
-require 'active_support/core_ext/object'
-require 'active_support/inflector'
 
 module LexisNexisInstantAuthenticate
   module Services
@@ -34,8 +31,18 @@ module LexisNexisInstantAuthenticate
         }
       end
 
+      def camelize(term)
+        term.to_s.split('_').each_with_index.map do |w,idx| 
+          if idx == 0
+            next w
+          else
+            next w.capitalize
+          end
+        end.join()
+      end
+
       def to_xml
-        Gyoku.xml(request_body, key_converter: -> key { [NAMESPACE, key.camelize(:lower)].join(':') })
+        Gyoku.xml(request_body, key_converter: -> key { [NAMESPACE, camelize(key)].join(':') })
       end
 
       def request_body
