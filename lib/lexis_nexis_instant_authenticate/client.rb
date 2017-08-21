@@ -21,6 +21,7 @@ module LexisNexisInstantAuthenticate
         config.log !@options[:production]
         config.log_level @options[:log_level] || :warn
         config.namespace_identifier "ws"
+        config.proxy @options[:proxy]
 
         config.wsse_auth(@options[:username], @options[:password], :digest)
       end
